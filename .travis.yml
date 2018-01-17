@@ -1,0 +1,11 @@
+language: node_js
+node_js: node
+services:
+- mongodb
+deploy:
+  provider: heroku
+  api_key:
+    secure: fXMqJlfK8h5cNT0dM2Zoj1L2MfXQ44FDdW1X2ld9vYrDMNNwUCBK7fWcio+uc4YdnpumdhnCl2H/z4J28WYlI8MZEmZyww/QmYNJhqAsu6vKDQj/UegoFWYqbe/o+sZZjIdLGdDJUSuWNfGCsj1vIf1DB84qdmJrOfHuSaXpSUZKlUMFPZyo4Lt0ooErKZhi4YHDAhDzfgv93j4XNH2gZm5K1Tka40cdO2tDc0WMnrZ6c+HvkXicGI50BFtWPOyejV0hhwI7xS+oNFU6TbI24iZVNK+wVnkiPWFB9wG7f6XstSQoEZPg6LNPcuLlcl6M5/QTd1zB6N7HvZjqEzJ6Gxpx90hg80vhtt1g9SRD2/A/0lxGDsXG1ngh7YTZuyf5jFknIPehgPkg+9e0Zs1KjF81ZjXiBy6x9QvVYsKbXMuHBSlgJP8VRO0z3Tr+/W3p+Y4eJiY+05GlukcFI6VAuKjruDzPfk3/AH5mkQXCDrGtZtMQ+/ZZgrsKax1VzcSk7FGNDcwEqpz0UsYrb/huad2if53DeqzniHLbUys9ApNQd0QsHyppaQ3/7zhhw0fS+ydbP5sfpkgvFaixaSZOyO+XnmtuLdtrvI9/cCVciZhIK9VFBtiw9tOz+P17deknfl73rHpBtuuhaA4hXOzkUr6FLwlmTsNG+53GWRcH1V0=
+  app: enigmatic-headland-13307
+  on:
+    repo: atakori/backlog-trakker-api
