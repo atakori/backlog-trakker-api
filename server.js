@@ -21,12 +21,10 @@ app.use(
     })
 );
 
+app.use(bodyParser.json({type:'*/*'}));
 app.use('/', routesRouter)
 
 //Server Setup
- app.get('/api/*', (req, res) => {
-   res.json({ok: true});
- });
 
 let server;
 
