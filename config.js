@@ -7,3 +7,4 @@ exports.TEST_DATABASE_URL =
 	process.env.TEST_DATABASE_URL ||
 	'mongodb://localhost/test-backlog-trakker-app';
 exports.PORT = process.env.PORT || 3000;
+exports.JWT_SECRET = "iufohafihkawds"
