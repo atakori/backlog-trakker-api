@@ -12,8 +12,14 @@ const localLogin= new LocalStrategy(localOptions, function(username, password, d
 	User.findOne({username: username}, function(err, user){
 		if (err) { return done(err) }
 		if (!user) {return done(null, false)}
-		//compare passwords	(pass through bcrypt)
 
+		//compare passwords	(pass through bcrypt)
+		user.comparePassword(password, function(err, isMatch) {
+			if (err) { return done(err); }
+			if (!isMatch) { return done(null,false)}
+
+			return done(null, user)
+		})
 
 	})
 	//if not, call done with false
@@ -43,3 +49,4 @@ const jwtLogin= new JwtStrategy(jwtOptions, function(payload, done) {
 
 //Tell passport to use the strategy
 passport.use(jwtLogin);
+passport.use(localLogin);

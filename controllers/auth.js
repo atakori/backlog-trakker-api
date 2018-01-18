@@ -7,6 +7,11 @@ function tokenForUser(user) {
 	return jwt.encode({ sub: user.id, iat: timestamp }, JWT_SECRET)
 }
 
+exports.login = function(req, res, next) {
+	//User is authorized, this gives a token
+	res.send({token: tokenForUser(req.user)})
+}
+
 exports.signup= function(req, res, next) {
 	const firstname= req.body.firstname;
 	const lastname= req.body.lastname;
