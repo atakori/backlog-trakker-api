@@ -32,6 +32,14 @@ userSchema.pre('save', function(next) {
 	})
 })
 
+//help with local strategy for comparing passwords
+userSchema.methods.comparePassword= function(potentialPassword, callback) {
+	bcrypt.compate(potentialPassword, this.password, function(err, isMatch) {
+		if (err) {return callback(err)}
+			callback(null, isMatch);
+	})
+}
+
 //Create the model class
 const ModelClass= mongoose.model("user", userSchema)
 

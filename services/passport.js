@@ -3,6 +3,21 @@ const User = require('../models/users');
 const { JWT_SECRET } = require('../config');
 const JwtStrategy= require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
+const LocalStrategy= require('passport-local');
+
+//creating local strategy
+const localOptions = {usernameField: 'username'}
+const localLogin= new LocalStrategy(localOptions, function(username, password, done){
+	//verify username and password, call done with user if correct
+	User.findOne({username: username}, function(err, user){
+		if (err) { return done(err) }
+		if (!user) {return done(null, false)}
+		//compare passwords	(pass through bcrypt)
+
+
+	})
+	//if not, call done with false
+})
 
 //setup Options for JWT Strategy
 	//tells where the jwt is located
