@@ -4,9 +4,8 @@ const morgan = require('morgan');
 const app = express();
 const routesRouter= require('./routes/router');
 const mongoose = require('mongoose');
+const cors= require('cors');
 
-
-const cors = require('cors');
 const {CLIENT_ORIGIN} = require('./config');
 
 // DB Setup
@@ -15,14 +14,13 @@ mongoose.Promise = global.Promise;
 const {PORT, DATABASE_URL} = require('./config');
 
 //App Setup
-app.use(
-    cors({
-        origin: CLIENT_ORIGIN
-    })
-);
+//allow AJAX requests from alternate domains
+app.use(cors());
 
 app.use(bodyParser.json({type:'*/*'}));
 app.use('/', routesRouter)
+
+
 
 //Server Setup
 

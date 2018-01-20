@@ -13,7 +13,7 @@ const requireLogin= passport.authenticate('local', { session: false });
 router.use(bodyParser.urlencoded({extended: true}));
 
 router.get('/', requireAuth, function(req, res) {
-	res.send({hi: 'hello!'})
+	res.send({message: 'Secret code is abc123'})
 })
 
 router.post('/login', requireLogin, auth.login);
