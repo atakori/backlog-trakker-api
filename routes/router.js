@@ -3,6 +3,15 @@ const bodyParser= require("body-parser");
 const auth= require("../controllers/auth");
 const passportService= require('../services/passport');
 const passport= require('passport');
+/*const webdriverio = require('webdriverio')*/
+const rp = require('request-promise');
+const cheerio = require('cheerio');
+
+const options = {
+	desiredCapabilities: {
+		browserName: 'firefox'
+	}
+};
 
 const router = express.Router();
 const jsonParser = bodyParser.json();
@@ -13,7 +22,23 @@ const requireLogin= passport.authenticate('local', { session: false });
 router.use(bodyParser.urlencoded({extended: true}));
 
 router.get('/', requireAuth, function(req, res) {
-	res.send({message: 'Secret code is abc123'})
+	/*let game_url_info= 'http://www.ign.com/wikis/dark-souls-3/Walkthrough'
+	webdriverio.remote(options).init().url(game_url_info).getTitle()
+	.then( title => { console.log(title)})
+	.status(204)*/
+	const options = {
+  uri: `https://www.google.com`,
+  transform: function (body) {
+    return cheerio.load(body);
+  }
+};
+	rp(options)
+  .then(($) => {
+    console.log($.html);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
 })
 
 router.post('/login', requireLogin, auth.login);
