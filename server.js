@@ -5,6 +5,7 @@ const app = express();
 const routesRouter= require('./routes/router');
 const mongoose = require('mongoose');
 const cors= require('cors');
+const igdbRouter = require('./routes/igdbRouter');
 
 const {CLIENT_ORIGIN} = require('./config');
 
@@ -18,7 +19,9 @@ const {PORT, DATABASE_URL} = require('./config');
 app.use(cors());
 
 app.use(bodyParser.json({type:'*/*'}));
+
 app.use('/', routesRouter)
+app.use('/games', igdbRouter);
 
 
 
