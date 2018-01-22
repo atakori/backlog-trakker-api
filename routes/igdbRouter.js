@@ -41,5 +41,20 @@ router.get('/genre', function(req,res) {
 	.catch(err => {console.log(err)})
 })
 
+router.get('/similarGames', function(req,res) {
+	axios.get(`${IGDB_REQUEST_URL}/games/${req.query.gameIds}?fields=name`, {
+		headers: {"user-key": `${IGDB_KEY}`, Accept: "application/json"}
+	})
+	.then(gameObjects => {
+		let gamesArray= []
+		let allGames= gameObjects.data;
+		allGames.map(game => {
+			gamesArray.push(game.name)
+		})
+		res.status(200).send(gamesArray)
+	})
+	.catch(err => {console.log(err)})
+});
+
 
 module.exports = router;
