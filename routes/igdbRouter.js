@@ -21,10 +21,24 @@ router.get('/', function(req,res) {
 	})
 	)
 	.then( gamedata => {
-		console.log(gamedata);
 		res.status(200).send(gamedata);
 	})
 	.catch(err => console.log("ERROR"))
+})
+
+router.get('/genre', function(req,res) {
+	axios.get(`${IGDB_REQUEST_URL}/genres/${req.query.ids}?fields=name`, {
+		headers: {"user-key": `${IGDB_KEY}`, Accept: "application/json"}
+	})
+	.then( genreObjects => {
+		let genreNames= [];
+		let allGenres= genreObjects.data
+		allGenres.map(genre => {
+			genreNames.push(genre.name)
+		})
+		res.status(200).send(genreNames)
+	})
+	.catch(err => {console.log(err)})
 })
 
 
