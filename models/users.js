@@ -7,7 +7,14 @@ const bcrypt= require("bcrypt-nodejs");
 		firstname: String,
 		lastname: String,
 		username: { type: String, unique: true, lowercase: true},
-		password: String
+		password: String,
+		gamecollection: {
+			games: [{
+				name: {type:String},
+				gameChapters: [{type: String}],
+				completedChapters: [{type: String}]
+			}]
+		}
 	});
 
 //On Save, encrypt user password
