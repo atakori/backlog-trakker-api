@@ -4,6 +4,7 @@ const bodyParser= require("body-parser");
 const {IGDB_REQUEST_URL, IGDB_KEY}= require('../config');
 const request= require("request");
 const axios= require('axios');
+const cheerio= require('cheerio');
 
 const router = express.Router();
 
@@ -55,6 +56,31 @@ router.get('/similarGames', function(req,res) {
 	})
 	.catch(err => {console.log(err)})
 });
+
+function getGameChaptersFromHtml(html) {
+	//using cheerio to map through chapters and return array
+	let chaptersArray= [];
+	$= cheerio.load(html);
+	const chaptersObjects= JSON.parse($(".ghn-L1.ghn-hasSub.ghn-open.ghn-active")[0].attribs["data-sub"])
+	chaptersObjects.map(chapterobject => {
+		chaptersArray.push(chapterobject.label)
+	})
+	return chaptersArray;
+}
+
+router.get('/chapters', function(req,res) {
+	const options = {
+		headers: {'user-agent': 'node.js'}
+	}
+	request(`http://www.ign.com/wikis/${req.query.gameName}/Walkthrough`, options, function (error,response, body) {
+		if(!error) {
+			let chapterArray= getGameChaptersFromHtml(body)
+			res.status(200).send(chapterArray)
+		} else {
+			console.log("ERROR!");
+		}
+	})
+})
 
 
 module.exports = router;
