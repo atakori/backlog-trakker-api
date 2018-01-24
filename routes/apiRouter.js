@@ -22,15 +22,10 @@ router.get('/user', requireAuth, function (req,res) {
 
 //router for adding games to user's collection
 router.post('/user', /*requireAuth,*/ function(req,res) {
-    console.log(req.query);
-    console.log(req.query.username);
-    console.log(req.query.name)
     let chapters = req.query.gameChapters;
     chapters= chapters.split(",")
     console.log(chapters)
     //post game and chapters
-    // TEST
-    //
     User
     .findOne({username: req.query.username})
     .update({$push: {gamecollection: {name: req.query.name, gameChapters: req.query.gameChapters.split(",")}}})
@@ -41,6 +36,28 @@ router.post('/user', /*requireAuth,*/ function(req,res) {
     })
     .catch(err=> {console.log(err)})
 })
+//GET router for checking the database for seeing if game is
+//in user's game collection
+router.get('/user/collection', function(req,res) {
+  console.log("CHECKING USER'S COLLECTION");
+  User
+  .findOne({username: req.query.username})
+  .find({"gamecollection.name": req.query.name})
+  .then(gameStatus => {
+    console.log("Attempted find");
+    console.log(gameStatus);
+    if(!gameStatus.length) {
+      //if not found it returns false
+      console.log("Game NOT in Collection")
+      res.status(200).send(false);
+    } else {
+      console.log("Game FOUND in Collection")
+      //if found, it returns true
+      res.status(200).send(true);
+    }
+  })
+  .catch(err=> {console.log(err)})
+  })
 /*  const userSchema= new Schema({
     firstname: String,
     lastname: String,
