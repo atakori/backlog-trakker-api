@@ -42,17 +42,24 @@ router.get('/genre', function(req,res) {
 	.catch(err => {console.log(err)})
 })
 
+
+//GET request to get similarGame names and Box Arts
 router.get('/similarGames', function(req,res) {
-	axios.get(`${IGDB_REQUEST_URL}/games/${req.query.gameIds}?fields=name`, {
+	axios.get(`${IGDB_REQUEST_URL}/games/${req.query.gameIds}?fields=name,cover`, {
 		headers: {"user-key": `${IGDB_KEY}`, Accept: "application/json"}
 	})
 	.then(gameObjects => {
 		let gamesArray= []
 		let allGames= gameObjects.data;
-		allGames.map(game => {
-			gamesArray.push(game.name)
+		let gamesObject= allGames.map(game => {
+			return {name: game.name, gameArtUrl: game.cover.url}
 		})
-		res.status(200).send(gamesArray)
+		/*allGames.map(game=> {
+			gamesArray.push(game.name)
+		})*/
+		console.log(gamesObject)
+		/*res.status(200).json(gamesArray)*/
+		res.status(200).json(gamesObject)
 	})
 	.catch(err => {console.log(err)})
 });

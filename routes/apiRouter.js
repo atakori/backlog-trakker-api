@@ -44,8 +44,6 @@ router.get('/user/collection', function(req,res) {
   .findOne({username: req.query.username})
   .find({"gamecollection.name": req.query.name})
   .then(gameStatus => {
-    console.log("Attempted find");
-    console.log(gameStatus);
     if(!gameStatus.length) {
       //if not found it returns false
       console.log("Game NOT in Collection")
