@@ -57,7 +57,6 @@ router.get('/similarGames', function(req,res) {
 		/*allGames.map(game=> {
 			gamesArray.push(game.name)
 		})*/
-		console.log(gamesObject)
 		/*res.status(200).json(gamesArray)*/
 		res.status(200).json(gamesObject)
 	})

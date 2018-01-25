@@ -24,11 +24,10 @@ router.get('/user', requireAuth, function (req,res) {
 router.post('/user', /*requireAuth,*/ function(req,res) {
     let chapters = req.query.gameChapters;
     chapters= chapters.split(",")
-    console.log(chapters)
     //post game and chapters
     User
     .findOne({username: req.query.username})
-    .update({$push: {gamecollection: {name: req.query.name, gameChapters: req.query.gameChapters.split(",")}}})
+    .update({$push: {gamecollection: {name: req.query.name, gameArtUrl: req.query.gameArtUrl, gameChapters: req.query.gameChapters.split(",")}}})
     .then( gamesObject=> {
       console.log("Game and Chapters added");
       console.log(gamesObject);

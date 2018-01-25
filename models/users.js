@@ -10,6 +10,7 @@ const bcrypt= require("bcrypt-nodejs");
 		password: String,
 		gamecollection: [{
 				name: {type:String},
+				gameArtUrl: {type:String},
 				gameChapters: [{type: String}],
 				completedChapters: [{type: String}]
 			}]
