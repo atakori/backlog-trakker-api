@@ -56,6 +56,14 @@ router.get('/user/collection', function(req,res) {
   })
   .catch(err=> {console.log(err)})
   })
+
+//GET router for returning a user's gameCollection
+router.get('/user/getGames', function(req,res) {
+  console.log("Fetching games");
+  console.log(req.query.username);
+
+})
+
 /*  const userSchema= new Schema({
     firstname: String,
     lastname: String,
