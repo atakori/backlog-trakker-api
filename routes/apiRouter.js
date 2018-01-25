@@ -24,6 +24,7 @@ router.get('/user', requireAuth, function (req,res) {
 router.post('/user', /*requireAuth,*/ function(req,res) {
     let chapters = req.query.gameChapters;
     chapters= chapters.split(",")
+    console.log(chapters);
     //post game and chapters
     User
     .findOne({username: req.query.username})
@@ -60,7 +61,14 @@ router.get('/user/collection', function(req,res) {
 router.get('/user/getGames', function(req,res) {
   console.log("Fetching games");
   console.log(req.query.username);
-
+  User
+  .findOne({username: req.query.username})
+  .select("gamecollection")
+  .then(gameCollection => {
+    console.log(gameCollection);
+    res.status(200).json(gameCollection);
+  })
+  .catch(err=> {console.log(err)})
 })
 
 /*  const userSchema= new Schema({
