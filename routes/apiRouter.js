@@ -64,9 +64,9 @@ router.get('/user/getGames', function(req,res) {
   User
   .findOne({username: req.query.username})
   .select("gamecollection")
-  .then(gameCollection => {
-    console.log(gameCollection);
-    res.status(200).json(gameCollection);
+  .then(gamecollection => {
+    console.log(gamecollection);
+    res.status(200).json(gamecollection.gamecollection);
   })
   .catch(err=> {console.log(err)})
 })
