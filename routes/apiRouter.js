@@ -69,7 +69,7 @@ router.get('/user/getGames', function(req,res) {
   .catch(err=> {console.log(err)})
 })
 
-router.get('/user/handleChapter', function(req,res) {
+router.get('/user/handleChapter', function(req,resp) {
   console.log("Searching for gameChapter");
   console.log(req.query.chapter);
   User
@@ -80,19 +80,37 @@ router.get('/user/handleChapter', function(req,res) {
     //if not found (empty array as response)
     //add the chapter to the array
     if(!res.length) {
+      let finalRes= resp;
       User
       .update({username: req.query.username, "gamecollection.name": req.query.name}, {"$push": {"gamecollection.$.completedChapters": req.query.chapter}})
       .then(response =>{
         console.log("Chapter successfully added");
-        res.status(200).json(response);
+        //then return the modified game object
+        User
+        .findOne({username: req.query.username})
+        .select("gamecollection")
+        .then(gamecollection => {
+          console.log(gamecollection)
+          finalRes.status(200).json(gamecollection.gamecollection);
+        })
+        .catch(err=> {console.log(err)})
       })
     } else {
       //if found, remove chapter from array
+      let finalRes= resp;
       User
       .update({username: req.query.username, "gamecollection.name": req.query.name}, {"$pull": {"gamecollection.$.completedChapters": req.query.chapter}})
       .then( response =>{
         console.log("Chapter Removed");
-        res.status(200).json(response)
+        //then return the modified game Object
+        User
+        .findOne({username: req.query.username})
+        .select("gamecollection")
+        .then(gamecollection => {
+          console.log(gamecollection)
+          finalRes.status(200).json(gamecollection.gamecollection);
+        })
+        .catch(err=> {console.log(err)})
       })
     }
   })
