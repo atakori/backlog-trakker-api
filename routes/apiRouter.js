@@ -16,7 +16,6 @@ router.use(bodyParser.urlencoded({extended: true}));
 
 router.get('/user', requireAuth, function (req,res) {
     const username= req.user.username;
-    console.log(username);
     res.status(200).send(username);
 })
 
@@ -60,6 +59,21 @@ router.get('/user/collection', function(req,res) {
 router.get('/user/getGames', function(req,res) {
   console.log("Fetching games");
   console.log(req.query.username);
+  //if a specific game name is supplied
+  //return that specific game info
+  if(req.query.name) {
+    console.log(req.query.name)
+    User
+    .findOne({username: req.query.username}, {"gamecollection": {$elemMatch: {name: req.query.name}}})
+    .then( gameObject => {
+      console.log(gameObject.gamecollection);
+      res.status(200).json(gameObject.gamecollection);
+    })
+    /*.then(response => {
+      console.log("working")
+      console.log(response)
+    })*/
+  } else {
   User
   .findOne({username: req.query.username})
   .select("gamecollection")
@@ -67,7 +81,9 @@ router.get('/user/getGames', function(req,res) {
     res.status(200).json(gamecollection.gamecollection);
   })
   .catch(err=> {console.log(err)})
-})
+  }
+}
+)
 
 router.get('/user/handleChapter', function(req,resp) {
   console.log("Searching for gameChapter");
