@@ -66,7 +66,6 @@ router.get('/user/getGames', function(req,res) {
     User
     .findOne({username: req.query.username}, {"gamecollection": {$elemMatch: {name: req.query.name}}})
     .then( gameObject => {
-      console.log(gameObject.gamecollection);
       res.status(200).json(gameObject.gamecollection);
     })
     /*.then(response => {
@@ -84,6 +83,20 @@ router.get('/user/getGames', function(req,res) {
   }
 }
 )
+
+//Route for getting user's entire backlog collection
+router.get('/user/getUserBacklog', function(req,res) {
+  console.log("Fetching Backlog");
+  console.log(req.query.username)
+    User
+    .findOne({username: req.query.username})
+    .select("gamecollection")
+    .then(gamecollection => {
+      console.log(gamecollection.gamecollection)
+      res.status(200).json(gamecollection.gamecollection);
+    })
+    .catch(err=> {console.log(err)})
+  })
 
 router.get('/user/handleChapter', function(req,resp) {
   console.log("Searching for gameChapter");
