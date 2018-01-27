@@ -22,9 +22,13 @@ router.get('/', function(req,res) {
 	})
 	)
 	.then( gamedata => {
+		console.log(gamedata);
 		res.status(200).send(gamedata);
 	})
-	.catch(err => console.log("ERROR"))
+	.catch(err => {
+		console.log(err)
+		res.status(400).send(err)
+	})
 })
 
 router.get('/genre', function(req,res) {
