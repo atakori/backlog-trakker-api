@@ -29,7 +29,6 @@ router.post('/user', /*requireAuth,*/ function(req,res) {
     .update({$push: {gamecollection: {name: req.query.name, gameArtUrl: req.query.gameArtUrl, gameChapters: req.query.gameChapters.split(",")}}})
     .then( gamesObject=> {
       console.log("Game and Chapters added");
-      console.log(gamesObject);
       res.status(200).send(gamesObject)
     })
     .catch(err=> {console.log(err)})
@@ -58,20 +57,14 @@ router.get('/user/collection', function(req,res) {
 //GET router for returning a user's gameCollection
 router.get('/user/getGames', function(req,res) {
   console.log("Fetching games");
-  console.log(req.query.username);
   //if a specific game name is supplied
   //return that specific game info
   if(req.query.name) {
-    console.log(req.query.name)
     User
     .findOne({username: req.query.username}, {"gamecollection": {$elemMatch: {name: req.query.name}}})
     .then( gameObject => {
       res.status(200).json(gameObject.gamecollection);
     })
-    /*.then(response => {
-      console.log("working")
-      console.log(response)
-    })*/
   } else {
   User
   .findOne({username: req.query.username})
@@ -87,12 +80,10 @@ router.get('/user/getGames', function(req,res) {
 //Route for getting user's entire backlog collection
 router.get('/user/getUserBacklog', function(req,res) {
   console.log("Fetching Backlog");
-  console.log(req.query.username)
     User
     .findOne({username: req.query.username})
     .select("gamecollection")
     .then(gamecollection => {
-      console.log(gamecollection.gamecollection)
       res.status(200).json(gamecollection.gamecollection);
     })
     .catch(err=> {console.log(err)})
@@ -100,12 +91,10 @@ router.get('/user/getUserBacklog', function(req,res) {
 
 router.get('/user/handleChapter', function(req,resp) {
   console.log("Searching for gameChapter");
-  console.log(req.query.chapter);
   User
   .findOne({username: req.query.username})
   .find({"gamecollection.completedChapters": req.query.chapter})
   .then(res => {
-    console.log(res);
     //if not found (empty array as response)
     //add the chapter to the array
     if(!res.length) {
@@ -119,7 +108,6 @@ router.get('/user/handleChapter', function(req,resp) {
         .findOne({username: req.query.username})
         .select("gamecollection")
         .then(gamecollection => {
-          console.log(gamecollection)
           finalRes.status(200).json(gamecollection.gamecollection);
         })
         .catch(err=> {console.log(err)})
@@ -136,7 +124,6 @@ router.get('/user/handleChapter', function(req,resp) {
         .findOne({username: req.query.username})
         .select("gamecollection")
         .then(gamecollection => {
-          console.log(gamecollection)
           finalRes.status(200).json(gamecollection.gamecollection);
         })
         .catch(err=> {console.log(err)})
