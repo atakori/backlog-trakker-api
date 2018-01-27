@@ -88,5 +88,15 @@ router.get('/chapters', function(req,res) {
 	})
 })
 
+router.get('/searchGames', function(req,res) {
+  axios.get(`${IGDB_REQUEST_URL}/games/?search=${req.query.value}&fields=name&limit=5`, {
+		headers: {"user-key": `${IGDB_KEY}`, Accept: "application/json"}
+	})
+  .then(response => {
+  	res.status(200).json(response.data);
+  })
+  .catch(err => {console.log(err)})
+})
+
 
 module.exports = router;
