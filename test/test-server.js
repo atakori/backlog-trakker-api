@@ -174,6 +174,7 @@ describe('Testing API Route GET endpoints', function() {
 
    describe('testing /user/handleChapter route', function() {
    	//testing if chapter is not found in array
+   	//if not found, it should add the chapter to the list
    	it('should add the chapter to the array list', function() {
    		return chai.request(app)
    		.get('/api/user/handleChapter')
@@ -186,11 +187,25 @@ describe('Testing API Route GET endpoints', function() {
    				}
    			})
 			expect(simpleArray[0]).to.deep.equal(['test Chapter 1', 'not Added Chapter' ]);
+   			expect(simpleArray[0]).to.be.an('array');
    		})
    	})
-   	/*it ('should remove the chapter from the array list', function() {
-   		
-   	})*/
-   })
+   	//if found, it should remove the chapter from the list
+   	it ('should remove the chapter from the array list', function() {
+   		return chai.request(app)
+   		.get('/api/user/handleChapter')
+   		.query({username: 'test', name: "Mario", chapter: 'test Chapter 1'})
+   		.then(function(res) {
+/*   			expect(some(res.body,{"completedChapters": ["test Chapter 1", "test Chapter 2", "test Chapter 3, not Added Chapter"]})).to.be.true;
+*/   			const simpleArray = res.body.map(gameObject => {
+   				if (gameObject.name == "Mario") {
+   					return gameObject.completedChapters
+   				}
+   			})
+			expect(simpleArray[0]).to.deep.equal([]);
+			expect(simpleArray[0]).to.be.an('array');
 
+   			})
+  		})
+	})
  });
