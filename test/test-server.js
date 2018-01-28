@@ -15,7 +15,7 @@ function seedUserData() {
   console.info('seeding user data');
   const seedData = [];
 
-  for (let i=1; i<=2; i++) {
+  for (let i=1; i<=1; i++) {
     seedData.push(generateUserData());
   }
   // this will return a promise
@@ -31,9 +31,9 @@ function generateUserData() {
   return {
     firstname: generateFirstName(),
     lastname: generateLastName(),
-    username: generateUsername(),
+    username: "Test",
     password: generateFakePasswords(),
-    gamecollection: [generateSpecificGameData(), generateGameData(), generateGameData()]
+    gamecollection:[generateSpecificGameData(), generateGameData()]
     }
 }
 
@@ -58,21 +58,21 @@ function generateFakePasswords() {
 }
 
 function generateGameData() {
-	return {
+	return ({
 		name: generateGameName(),
 		gameArtUrl: generateRandomArt(),
 		gameChapters: ["test Chapter 1", "test Chapter 2", "test Chapter 3"],
 		completedChapters: ["test Chapter 1"] 
-		}
+		})
 }
 
 function generateSpecificGameData() {
-	return {
-		name: "Dark Souls II",
+	return ({
+		name: "Mario",
 		gameArtUrl: generateRandomArt(),
 		gameChapters: ["test Chapter 1", "test Chapter 2", "test Chapter 3"],
 		completedChapters: ["test Chapter 1"] 
-		}
+		})
 }
 
 function generateGameName() {
@@ -117,28 +117,22 @@ describe('Testing API Route GET endpoints', function() {
 
    it('should find the game and return a true value', function() {
      return chai.request(app)
-       .get('/api/user/collection?username=test&name=Dark+Souls+II')
+       .get('/api/user/collection')
+       .query({username: 'test', name:'Mario'})
        .then(function(res) {
          res.should.have.status(200);
+         res.should.be.json;
+         res.body.should.be.true;
+       });
+   });
+
+   it('should NOT find game and return a false value', function() {
+     return chai.request(app)
+       .get('/api/user/collection')
+       .query({username: 'test', name:'Random Game'})
+       .then(function(res) {
+         res.should.have.status(204);
+         res.body.should.be.empty;
        });
    });
  });
-
-/*router.get('/user/collection', function(req,res) {
-  console.log("CHECKING USER'S COLLECTION");
-  User
-  .findOne({username: req.query.username})
-  .find({"gamecollection.name": req.query.name})
-  .then(gameStatus => {
-    if(!gameStatus.length) {
-      //if not found it returns false
-      console.log("Game NOT in Collection")
-      res.status(200).send(false);
-    } else {
-      console.log("Game FOUND in Collection")
-      //if found, it returns true
-      res.status(200).send(true);
-    }
-  })
-  .catch(err=> {console.log(err)})
-  })*/

@@ -44,7 +44,7 @@ router.get('/user/collection', function(req,res) {
     if(!gameStatus.length) {
       //if not found it returns false
       console.log("Game NOT in Collection")
-      res.status(200).send(false);
+      res.status(204).send(false);
     } else {
       console.log("Game FOUND in Collection")
       //if found, it returns true
