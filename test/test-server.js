@@ -3,6 +3,7 @@ const chaiHttp = require('chai-http');
 const mongoose = require('mongoose');
 
 const should = chai.should();
+const expect= chai.expect;
 
 const User= require('../models/users');
 
@@ -135,4 +136,30 @@ describe('Testing API Route GET endpoints', function() {
          res.body.should.be.empty;
        });
    });
+
+   it('should find the game and return the searchec game Object', function() {
+   	return chai.request(app)
+   	.get('/api/user/getGames')
+   	.query({username: 'test', name:'Mario'})
+   	.then(function(res) {
+   		res.should.have.status(200);
+   		res.body[0].should.have.keys('_id', 'gameArtUrl', 'name', 'completedChapters', 'gameChapters');
+   		res.body.should.have.keys('0');
+   	})
+   })
+
+   it('should return the entire gamecollection Object', function() {
+   	return chai.request(app)
+   	.get('/api/user/getGames')
+   	.query({username: 'test'})
+   	.then(function(res) {
+   		res.should.have.status(200);
+   		res.body[0].should.have.keys('_id', 'gameArtUrl', 'name', 'completedChapters', 'gameChapters');
+		expect(res.body).to.have.length.above(1);
+   	})
+   })
+
+/*   it('should NOT find the game and return the gamecollection Object', function() {
+   	
+   })*/
  });
