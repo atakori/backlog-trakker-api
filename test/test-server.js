@@ -11,6 +11,8 @@ const {app, runServer, closeServer} = require('../server');
 const {TEST_DATABASE_URL} = require('../config');
 
 chai.use(chaiHttp);
+chai.use(require('chai-like'));
+chai.use(require('chai-things'));
 
 function seedUserData() {
   console.info('seeding user data');
@@ -168,9 +170,27 @@ describe('Testing API Route GET endpoints', function() {
    		res.body[0].should.have.keys('_id', 'gameArtUrl', 'name', 'completedChapters', 'gameChapters');
 		expect(res.body).to.have.length.above(1);
    })
+  })
+
+   describe('testing /user/handleChapter route', function() {
+   	//testing if chapter is not found in array
+   	it('should add the chapter to the array list', function() {
+   		return chai.request(app)
+   		.get('/api/user/handleChapter')
+   		.query({username: 'test', name: "Mario", chapter: 'not Added Chapter'})
+   		.then(function(res) {
+/*   			expect(some(res.body,{"completedChapters": ["test Chapter 1", "test Chapter 2", "test Chapter 3, not Added Chapter"]})).to.be.true;
+*/   			const simpleArray = res.body.map(gameObject => {
+   				if (gameObject.name == "Mario") {
+   					return gameObject.completedChapters
+   				}
+   			})
+			expect(simpleArray[0]).to.deep.equal(['test Chapter 1', 'not Added Chapter' ]);
+   		})
+   	})
+   	/*it ('should remove the chapter from the array list', function() {
+   		
+   	})*/
    })
 
-/*   it('should NOT find the game and return the gamecollection Object', function() {
-   	
-   })*/
  });
