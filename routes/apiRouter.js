@@ -29,7 +29,7 @@ router.post('/user', /*requireAuth,*/ function(req,res) {
     .update({$push: {gamecollection: {name: req.query.name, gameArtUrl: req.query.gameArtUrl, gameChapters: req.query.gameChapters.split(",")}}})
     .then( gamesObject=> {
       console.log("Game and Chapters added");
-      res.status(200).send(gamesObject)
+      res.status(201).send(gamesObject)
     })
     .catch(err=> {console.log(err)})
 })

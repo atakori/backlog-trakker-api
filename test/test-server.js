@@ -88,19 +88,6 @@ const randomArtUrls = ['//images.igdb.com/igdb/image/upload/t_thumb/lxuvogkwn3le
 	return randomArtUrls[Math.floor(Math.random() * randomArtUrls.length)]
 }
 
-/*const userSchema= new Schema({
-		firstname: String,
-		lastname: String,
-		username: { type: String, unique: true, lowercase: true},
-		password: String,
-		gamecollection: [{
-				name: {type:String},
-				gameArtUrl: {type:String},
-				gameChapters: [{type: String}],
-				completedChapters: [{type: String}]
-			}]
-	});*/
-
 describe('Testing API Route GET endpoints', function() {
      before(function() {
     return runServer(TEST_DATABASE_URL);
@@ -186,6 +173,7 @@ describe('Testing API Route GET endpoints', function() {
    					return gameObject.completedChapters
    				}
    			})
+			res.should.have.status(200);
 			expect(simpleArray[0]).to.deep.equal(['test Chapter 1', 'not Added Chapter' ]);
    			expect(simpleArray[0]).to.be.an('array');
    		})
@@ -196,16 +184,27 @@ describe('Testing API Route GET endpoints', function() {
    		.get('/api/user/handleChapter')
    		.query({username: 'test', name: "Mario", chapter: 'test Chapter 1'})
    		.then(function(res) {
-/*   			expect(some(res.body,{"completedChapters": ["test Chapter 1", "test Chapter 2", "test Chapter 3, not Added Chapter"]})).to.be.true;
-*/   			const simpleArray = res.body.map(gameObject => {
+			const simpleArray = res.body.map(gameObject => {
    				if (gameObject.name == "Mario") {
    					return gameObject.completedChapters
    				}
    			})
+			res.should.have.status(200);
 			expect(simpleArray[0]).to.deep.equal([]);
 			expect(simpleArray[0]).to.be.an('array');
-
    			})
   		})
 	})
+
+ describe('Testing POST endpoint', function() {
+ 	it('should add the specific game and its chapters to the users gameCollection', function() {
+ 		return chai.request(app)
+ 		.post('/api/user')
+ 		.query({username: 'test', name: 'New Game', gameArtUrl: 'http:artUrlHere', gameChapters: 'chapter1,chapter2,chapter3'})
+ 		.then(function (res) {
+ 			res.should.have.status(201);
+ 			expect(res.body).to.deep.equal({ n: 1, nModified: 1, ok: 1 });
+ 		})
+ 	})
+ })
  });
