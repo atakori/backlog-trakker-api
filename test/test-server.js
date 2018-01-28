@@ -159,6 +159,17 @@ describe('Testing API Route GET endpoints', function() {
    	})
    })
 
+   it('should return the users entire backlog', function() {
+   	return chai.request(app)
+   	.get('/api/user/getUserBacklog')
+   	.query({username: 'test'})
+   	.then(function(res) {
+   		res.should.have.status(200);
+   		res.body[0].should.have.keys('_id', 'gameArtUrl', 'name', 'completedChapters', 'gameChapters');
+		expect(res.body).to.have.length.above(1);
+   })
+   })
+
 /*   it('should NOT find the game and return the gamecollection Object', function() {
    	
    })*/
