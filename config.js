@@ -1,6 +1,6 @@
 exports.CLIENT_ORIGIN;
 exports.DATABASE_URL =
-    process.env.DATABASE_URL ||
+    process.env.REACT_APP_DATABASE_URL ||
     global.DATABASE_URL ||
     'mongodb://localhost/backlog-trakker-app';
 exports.TEST_DATABASE_URL = 
