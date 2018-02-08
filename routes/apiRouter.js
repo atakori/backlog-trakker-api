@@ -105,8 +105,7 @@ router.get('/user/handleChapter', function(req,resp) {
         console.log("Chapter successfully added");
         //then return the modified game object
         User
-        .findOne({username: req.query.username})
-        .select("gamecollection")
+        .findOne({username: req.query.username}, {"gamecollection": {$elemMatch: {name: req.query.name}}})
         .then(gamecollection => {
           finalRes.status(200).json(gamecollection.gamecollection);
         })
@@ -121,8 +120,7 @@ router.get('/user/handleChapter', function(req,resp) {
         console.log("Chapter Removed");
         //then return the modified game Object
         User
-        .findOne({username: req.query.username})
-        .select("gamecollection")
+        .findOne({username: req.query.username}, {"gamecollection": {$elemMatch: {name: req.query.name}}})
         .then(gamecollection => {
           finalRes.status(200).json(gamecollection.gamecollection);
         })

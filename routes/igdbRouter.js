@@ -71,11 +71,15 @@ function getGameChaptersFromHtml(html) {
 	//using cheerio to map through chapters and return array
 	let chaptersArray= [];
 	$= cheerio.load(html);
+	if($(".ghn-L1.ghn-hasSub.ghn-open.ghn-active")[0] === undefined) {
+		return "error";
+	} else {
 	const chaptersObjects= JSON.parse($(".ghn-L1.ghn-hasSub.ghn-open.ghn-active")[0].attribs["data-sub"])
 	chaptersObjects.map(chapterobject => {
 		chaptersArray.push(chapterobject.label)
 	})
 	return chaptersArray;
+	}
 }
 
 router.get('/chapters', function(req,res) {
@@ -85,9 +89,15 @@ router.get('/chapters', function(req,res) {
 	request(`http://www.ign.com/wikis/${req.query.gameName}/Walkthrough`, options, function (error,response, body) {
 		if(!error) {
 			let chapterArray= getGameChaptersFromHtml(body)
-			res.status(200).send(chapterArray)
+			console.log(chapterArray)
+			if(chapterArray !== "error") {
+				res.status(200).send(chapterArray)
+			} else {
+				console.log("SENDING ERROR BACK")
+				res.status(500).send(error);
+			}
 		} else {
-			console.log("ERROR!");
+			res.status(500).send(error);
 		}
 	})
 })
