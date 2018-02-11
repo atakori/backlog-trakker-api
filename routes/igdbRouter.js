@@ -103,7 +103,7 @@ router.get('/chapters', function(req,res) {
 })
 
 router.get('/searchGames', function(req,res) {
-  axios.get(`${IGDB_REQUEST_URL}/games/?search=${req.query.value}&fields=name&limit=5`, {
+  axios.get(`${IGDB_REQUEST_URL}/games/?search=${req.query.value}&fields=name&filter[version_parent][not_exists]=1&limit=5`, {
 		headers: {"user-key": `${IGDB_KEY}`, Accept: "application/json"}
 	})
   .then(response => {

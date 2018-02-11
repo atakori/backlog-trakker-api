@@ -9,6 +9,6 @@ exports.TEST_DATABASE_URL =
 exports.PORT = process.env.PORT || 8080;
 exports.JWT_SECRET = "iufohafihkawds";
 
-// IGDB INFO (Test Account: riku12764)
-exports.IGDB_REQUEST_URL= "https://api-2445582011268.apicast.io";
-exports.IGDB_KEY= "92e467edf212568a890c3afd82d9198d";
+// IGDB INFO (Test Account: atakori)
+exports.IGDB_REQUEST_URL= "https://api-endpoint.igdb.com";
+exports.IGDB_KEY= "0be2044d95caf78fcbbef802fefd56ea";
