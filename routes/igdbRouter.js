@@ -22,7 +22,6 @@ router.get('/', function(req,res) {
 	})
 	)
 	.then( gamedata => {
-		console.log(gamedata);
 		res.status(200).send(gamedata);
 	})
 	.catch(err => {
@@ -89,7 +88,6 @@ router.get('/chapters', function(req,res) {
 	request(`http://www.ign.com/wikis/${req.query.gameName}/Walkthrough`, options, function (error,response, body) {
 		if(!error) {
 			let chapterArray= getGameChaptersFromHtml(body)
-			console.log(chapterArray)
 			if(chapterArray !== "error") {
 				res.status(200).send(chapterArray)
 			} else {

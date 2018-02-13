@@ -135,15 +135,4 @@ router.get('/user/handleChapter', function(req,resp) {
   //dispatch GET_GAME_COLLECTION to ReRender
 })
 
-/*  const userSchema= new Schema({
-    firstname: String,
-    lastname: String,
-    username: { type: String, unique: true, lowercase: true},
-    password: String,
-    gamecollection: [{
-        name: {type:String},
-        gameChapters: [{type: String}],
-        completedChapters: [{type: String}]
-      }]
-  });*/
 module.exports = router;
